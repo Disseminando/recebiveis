@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_paciente" value="name:id_pac;datatype:int,name:data_pac;datatype:date,name:nome_pac;datatype:string,name:fone_pac;datatype:string,name:email_pac;datatype:string,name:conv_id;datatype:int,name:situacao_pac;datatype:int,name:cadastrador_pac;datatype:string" />
+	<infoitem key="UD_cs_convenio" value="name:id_conv;datatype:int,name:nome_conv;datatype:string" />
+	<infoitem key="UD_cs_situacao" value="name:id_situa;datatype:int,name:tipo_situa;datatype:string" />
+</info>

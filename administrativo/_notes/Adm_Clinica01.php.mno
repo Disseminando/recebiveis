@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_situacao" value="name:id_situa;datatype:int,name:tipo_situa;datatype:string" />
+	<infoitem key="UD_cs_usuario" value="name:id_ace;datatype:int,name:usu_data;datatype:date,name:usu_id;datatype:int,name:login;datatype:string,name:senha;datatype:string,name:perfil_id;datatype:int,name:situacao_ace;datatype:int,name:cadastrador_ace;datatype:string,name:id_pf;datatype:int,name:nome_pf;datatype:string" />
+</info>

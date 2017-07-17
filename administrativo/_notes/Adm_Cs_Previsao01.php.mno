@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_medico" value="name:id_med;datatype:int,name:nome_med;datatype:string" />
+	<infoitem key="UD_cs_total" value="name:sum(valor_lanc);datatype:real,name:sum(tx_mat_med_lanc);datatype:real,name:med_id;datatype:int" />
+	<infoitem key="UD_cs_lancamento" value="name:id_lanc;datatype:int,name:data_lanc;datatype:date,name:clin_id;datatype:int,name:med_id;datatype:int,name:pac_id;datatype:int,name:conv_id;datatype:int,name:proc_id;datatype:int,name:valor_lanc;datatype:real,name:pag_id;datatype:int,name:tx_mat_med_lanc;datatype:real,name:cadastrador_lanc;datatype:string,name:id_med;datatype:int,name:nome_med;datatype:string,name:repasse_med;datatype:real,name:id_clin;datatype:int,name:nome_clin;datatype:string" />
+	<infoitem key="UD_cs_calculos" value="name:med_id;datatype:int,name:valor_lanc;datatype:real,name:tx_mat_med_lanc;datatype:real" />
+</info>

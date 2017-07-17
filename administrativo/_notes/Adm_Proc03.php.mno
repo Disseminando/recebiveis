@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_procedimento" value="name:cod_proc;datatype:string,name:id_proc;datatype:int,name:nome_proc;datatype:string,name:situacao_proc;datatype:int" />
+	<infoitem key="UD_cs_proc" value="name:id_proc;datatype:int,name:cod_proc;datatype:string,name:nome_proc;datatype:string,name:situacao_proc;datatype:int,name:cadastrador_proc;datatype:string" />
+	<infoitem key="UD_cs_situacao" value="name:id_situa;datatype:int,name:tipo_situa;datatype:string" />
+</info>

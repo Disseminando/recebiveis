@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_usuarios" value="name:id_usu;datatype:int,name:nome_usu;datatype:string" />
+	<infoitem key="UD_cs_perfil" value="name:id_pf;datatype:int,name:nome_pf;datatype:string" />
+	<infoitem key="UD_cs_situacao" value="name:id_situa;datatype:int,name:tipo_situa;datatype:string" />
+	<infoitem key="UD_Recordset1" value="name:id_clin;datatype:int,name:nome_clin;datatype:string" />
+	<infoitem key="UD_cs_medico" value="name:id_med;datatype:int,name:nome_med;datatype:string" />
+	<infoitem key="UD_cs_paciente" value="name:id_pac;datatype:int,name:nome_pac;datatype:string" />
+	<infoitem key="UD_cs_convenio" value="name:id_conv;datatype:int,name:nome_conv;datatype:string" />
+	<infoitem key="UD_cs_procedimento" value="name:id_proc;datatype:int,name:nome_proc;datatype:string" />
+	<infoitem key="UD_cs_pagamento" value="name:id_pag;datatype:int,name:nome_pag;datatype:string" />
+</info>

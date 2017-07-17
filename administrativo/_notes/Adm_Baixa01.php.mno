@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_clinicas" value="name:id_clin;datatype:int,name:nome_clin;datatype:string" />
+</info>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_medico" value="name:id_med;datatype:int,name:nome_med;datatype:string" />
+	<infoitem key="UD_cs_total" value="name:sum(valor_bax);datatype:real,name:sum(imp_bax);datatype:real" />
+	<infoitem key="UD_cs_clinica" value="name:id_clin;datatype:int,name:nome_clin;datatype:string" />
+	<infoitem key="UD_cs_baixa" value="name:id_bax;datatype:int,name:data_bax;datatype:date,name:clin_id_bax;datatype:int,name:cod_lanc_bax;datatype:int,name:med_id_bax;datatype:int,name:valor_bax;datatype:real,name:imp_bax;datatype:real,name:cadastrador_bax;datatype:string,name:nome_clin;datatype:string" />
+</info>

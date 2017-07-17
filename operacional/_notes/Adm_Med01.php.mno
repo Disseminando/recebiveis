@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_usuarios" value="name:id_usu;datatype:int,name:nome_usu;datatype:string" />
+	<infoitem key="UD_cs_perfil" value="name:id_pf;datatype:int,name:nome_pf;datatype:string" />
+	<infoitem key="UD_cs_situacao" value="name:id_situa;datatype:int,name:tipo_situa;datatype:string" />
+	<infoitem key="UD_cs_clinica" value="name:id_clin;datatype:int,name:nome_clin;datatype:string" />
+</info>

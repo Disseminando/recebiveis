@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_situacao" value="name:id_situa;datatype:int,name:tipo_situa;datatype:string" />
+	<infoitem key="UD_cs_convenio" value="name:id_conv;datatype:int,name:nome_conv;datatype:string,name:situacao_conv;datatype:int,name:id_situa;datatype:int,name:tipo_situa;datatype:string" />
+	<infoitem key="UD_cs_medico" value="name:id_med;datatype:int,name:nome_med;datatype:string" />
+	<infoitem key="UD_cs_lancamento" value="name:id_lanc;datatype:int,name:data_lanc;datatype:date,name:clin_id;datatype:int,name:med_id;datatype:int,name:pac_id;datatype:int,name:conv_id;datatype:int,name:proc_id;datatype:int,name:valor_lanc;datatype:real,name:pag_id;datatype:int,name:tx_mat_med_lanc;datatype:real,name:cadastrador_lanc;datatype:string" />
+	<infoitem key="UD_cs_total" value="name:sum(valor_lanc);datatype:real" />
+</info>
