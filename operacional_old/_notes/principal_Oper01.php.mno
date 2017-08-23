@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<info>
-	<infoitem key="UD_cs_usuario" value="name:id_ace;datatype:int,name:usu_data;datatype:date,name:usu_id;datatype:int,name:login;datatype:string,name:senha;datatype:string,name:perfil_id;datatype:int,name:situacao_ace;datatype:int,name:cadastrador_ace;datatype:string,name:id_pf;datatype:int,name:nome_pf;datatype:string" />
-	<infoitem key="UD_cs_contas" value="name:id_ct_pag;datatype:int,name:data_ct_pag;datatype:date,name:clin_id_ct_pag;datatype:int,name:conta_id_pag;datatype:int,name:doc_ct_pag;datatype:string,name:dtvenc_ct_pag;datatype:date,name:valor_ct_pag;datatype:real,name:dtpag_ct_pag;datatype:date,name:valorpag_ct_pag;datatype:real,name:desc_ct_pag;datatype:real,name:juros_ct_pag;datatype:real,name:obs_ct_pag;datatype:blob,name:cadastrador_ct_pag;datatype:string" />
-</info>
