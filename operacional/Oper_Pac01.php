@@ -104,6 +104,27 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
+// *** Redirect if username exists
+$MM_flag="MM_insert";
+if (isset($_POST[$MM_flag])) {
+  $MM_dupKeyRedirect="principal_Oper01.php";
+  $loginUsername = $_POST['cpf_pac'];
+  $LoginRS__query = sprintf("SELECT cpf_pac FROM paciente WHERE cpf_pac=%s", GetSQLValueString($loginUsername, "text"));
+  mysql_select_db($database_rec01, $rec01);
+  $LoginRS=mysql_query($LoginRS__query, $rec01) or die(mysql_error());
+  $loginFoundUser = mysql_num_rows($LoginRS);
+
+  //if there is a row in the database, the username was found - can not add the requested username
+  if($loginFoundUser){
+    $MM_qsChar = "?";
+    //append the username to the redirect page
+    if (substr_count($MM_dupKeyRedirect,"?") >=1) $MM_qsChar = "&";
+    $MM_dupKeyRedirect = $MM_dupKeyRedirect . $MM_qsChar ."requsername=".$loginUsername;
+    header ("Location: $MM_dupKeyRedirect");
+    exit;
+  }
+}
+
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
@@ -113,9 +134,15 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 	$data = $_POST['data_pac'];
 	$data = explode("/", $data);
     $data = $data[2]."-".$data[1]."-".$data[0];
-  $insertSQL = sprintf("INSERT INTO paciente (data_pac, nome_pac, fone_pac, email_pac, conv_id, situacao_pac, cadastrador_pac) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO paciente (data_pac, nome_pac, cpf_pac, end_pac, bairro_pac, cidade_pac, uf_pac, cep_pac, fone_pac, email_pac, conv_id, situacao_pac, cadastrador_pac) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($data, "date"),
                        GetSQLValueString($_POST['nome_pac'], "text"),
+                       GetSQLValueString($_POST['cpf_pac'], "text"),
+                       GetSQLValueString($_POST['end_pac'], "text"),
+                       GetSQLValueString($_POST['bairro_pac'], "text"),
+                       GetSQLValueString($_POST['cidade_pac'], "int"),
+                       GetSQLValueString($_POST['uf_pac'], "text"),
+                       GetSQLValueString($_POST['cep_pac'], "text"),
                        GetSQLValueString($_POST['fone_pac'], "text"),
                        GetSQLValueString($_POST['email_pac'], "text"),
                        GetSQLValueString($_POST['conv_id'], "int"),
@@ -125,7 +152,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   mysql_select_db($database_rec01, $rec01);
   $Result1 = mysql_query($insertSQL, $rec01) or die(mysql_error());
 
-  $insertGoTo = "../restrito/principal.php";
+  $insertGoTo = "principal_Oper01.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
     $insertGoTo .= $_SERVER['QUERY_STRING'];
@@ -140,7 +167,7 @@ $row_cs_convenio = mysql_fetch_assoc($cs_convenio);
 $totalRows_cs_convenio = mysql_num_rows($cs_convenio);
 
 mysql_select_db($database_rec01, $rec01);
-$query_cs_situacao = "SELECT id_situa, tipo_situa FROM situacao ORDER BY tipo_situa ASC";
+$query_cs_situacao = "SELECT id_situa, tipo_situa FROM situacao";
 $cs_situacao = mysql_query($query_cs_situacao, $rec01) or die(mysql_error());
 $row_cs_situacao = mysql_fetch_assoc($cs_situacao);
 $totalRows_cs_situacao = mysql_num_rows($cs_situacao);
@@ -170,19 +197,40 @@ $totalRows_cs_situacao = mysql_num_rows($cs_situacao);
 			<script src="../js/bootstrap.min.js"></script>
 		<!--script-->
 			<script type="text/javascript" src="../js/move-top.js"></script>
-			<script type="text/javascript" src="../js/easing.js"></script>
-			<script src="../SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
-            <script src="../SpryAssets/SpryValidationTextarea.js" type="text/javascript"></script>            
-            
+			<script type="text/javascript" src="../js/easing.js"></script>           
+			<script src="http://www.google.com/jsapi"></script>
+            <script src="../SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+            <script src="../SpryAssets/SpryValidationSelect.js" type="text/javascript"></script>
             <link href="../SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css">
-        	<link href="../SpryAssets/SpryValidationTextarea.css" rel="stylesheet" type="text/css">
-		    <link href="../SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css">
-							
+            
+			<script type="text/javascript">
+          
+			  $(document).ready(function(){
+				 
+				 $("select[name=uf_pac]").change(function(){
+					$("select[name=cidade_pac]").html('<option value="0">Carregando...</option>');
+					
+					$.post("cidades.php",
+						  {uf_pac:$(this).val()},
+						  function(valor){
+							 $("select[name=cidade_pac]").html(valor);
+						  }
+						  )
+					
+				 })
+			  })
+          
+    </script>
+           
+<link href="../SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css">
 </head>
   <!--Fim do Cabeçalho-->
 
 
 <body>
+            <span id="sprytextfield4">
+            <input type="text" name="data_pac" value="" size="10">
+            <span class="textfieldRequiredMsg">Um valor é necessário.</span></span>
             <div class="header" id="home">
 			<div class="header-top">
 				<div class="container">
@@ -213,7 +261,7 @@ $totalRows_cs_situacao = mysql_num_rows($cs_situacao);
 						<a href="<?php echo $logoutAction ?>">Sair</a>
 						</li>
 						<!--script-->
-					    <script type="text/javascript">
+			          <script type="text/javascript">
 						jQuery(document).ready(function($) {
 						$(".scroll").click(function(event){		
 						event.preventDefault();
@@ -229,124 +277,161 @@ $totalRows_cs_situacao = mysql_num_rows($cs_situacao);
 			  </nav>
           </div>
 			
-	</div>
+</div>
 		<!-- Identifica Usuario Logado -->		
 				<?php include('../restrito/identifica01.php');?>
-				<?php include('Menu_Operacional.php');?> 
-<div class="col-md-8 ser-fet">
+                <?php include('Menu_Operacional.php');?>
+                        <div class="col-md-8 ser-fet">
 						<h3>:..Paciente - Cadastro..:</h3>
 						<span class="line"></span>
-						<div class="features">
-							<div class="col-md-6 fet-pad">
-								<div class="div-margin">
-									<div class="col-md-3 fet-pad wid">										
-									</div>
-									<div class="col-md-9 fet-pad wid2">
-                                      <form method="post" name="form1" action="<?php echo $editFormAction; ?>">
-                                        <table width="100%" align="center" cellpadding="10" cellspacing="10">
-                                          <tr valign="baseline">
-                                            <td width="10%" align="right" nowrap><strong>Data:</strong></td>
-                                            <td width="90%"><input type="text" name="data_pac" value="<?php  
-																	                                    $date = date('d/m/Y');
-																										echo $date;
-																										?>" size="10" readonly="readonly"></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Nome:</strong></td>
-                                      <td><span id="sprytextfield1">
-                                              <input name="nome_pac" type="text" value="" size="45" maxlength="255">
-                                            <span class="textfieldRequiredMsg">Obrigatorio.</span></span></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Telefone:</strong></td>
-                                      <td><span id="sprytextfield2">
-                                      <input name="fone_pac" type="text" value="" size="20" maxlength="20">
-                                      <span class="textfieldRequiredMsg">Inválido.</span><span class="textfieldInvalidFormatMsg">Formato inválido.</span></span></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Email:</strong></td>
-                                      <td><span id="sprytextfield3">
-                                              <input name="email_pac" type="text" value="" size="45" maxlength="255">
-</span></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Convênio:</strong></td>
-                                      <td><span id="spryselect1">
-                                              <select name="conv_id" id="conv_id">
-                                                <option value="0">Selecione...</option>
-                                                <?php
-												do {  
-												?>
-                                                <option value="<?php echo $row_cs_convenio['id_conv']?>"> 
-												<?php echo $row_cs_convenio['nome_conv']?></option>
-                                                <?php
-												} while ($row_cs_convenio = mysql_fetch_assoc($cs_convenio));
-												  $rows = mysql_num_rows($cs_convenio);
-												  if($rows > 0) {
-													  mysql_data_seek($cs_convenio, 0);
-													  $row_cs_convenio = mysql_fetch_assoc($cs_convenio);
-												  }
-												?>
-                                              </select>
-                                            <span class="selectRequiredMsg">Inválido.</span></span></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Situação:</strong></td>
-                                      <td><span id="spryselect2">
-                                              <select name="situacao_pac" id="situacao_pac">
-                                                <option value="0">Selecione...</option>
-                                                <?php
-													do {  
-													?>
-                                                <option value="<?php echo $row_cs_situacao['id_situa']?>">
-                                                 <?php echo $row_cs_situacao['tipo_situa']?></option>
-                                                <?php
-													} while ($row_cs_situacao = mysql_fetch_assoc($cs_situacao));
-													  $rows = mysql_num_rows($cs_situacao);
-													  if($rows > 0) {
-														  mysql_data_seek($cs_situacao, 0);
-														  $row_cs_situacao = mysql_fetch_assoc($cs_situacao);
-													  }
-													?>
-                                              </select>
-                                            <span class="selectRequiredMsg">Inválido.</span></span></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Cadastrador:</strong></td>
-                                            <td><input name="cadastrador_pac" type="text" value="<?php  echo $_SESSION['MM_Username'];?>" 
+                         <div class="w3-container">
+                          <br>
+                          <form method="post" name="form1" action="<?php echo $editFormAction; ?>">
+                            <table width="100%" border="0" align="center" cellpadding="10" cellspacing="10">
+                              <tr valign="baseline">
+                                <td width="10%" align="right" nowrap>Data:</td>
+                                <td width="90%" align="left"><span id="data_pac">
+                                <input name="data_pac" type="text" id="data_pac" size="10">
+                                <span class="textfieldInvalidFormatMsg">Formato inválido.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Nome:</td>
+                                <td align="left"><span id="sprytextfield2">
+                                  <input name="nome_pac" type="text" value="" size="20" maxlength="255">
+                                <span class="textfieldRequiredMsg">Obrigatorio.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">CPF:</td>
+                                <td align="left"><span id="sprytextfield1">
+                                <input name="cpf_pac" type="text" value="" size="10" maxlength="20">
+                                <span class="textfieldRequiredMsg">Obrigatorio.</span><span class="textfieldInvalidFormatMsg">Formato inválido.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Endereço:</td>
+                                <td align="left"><span id="sprytextfield3">
+                                  <input name="end_pac" type="text" value="" size="20" maxlength="255">
+                                <span class="textfieldRequiredMsg">Obrigatorio.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Bairro:</td>
+                                <td align="left"><input name="bairro_pac" type="text" value="" size="20" maxlength="80"></td>
+                              </tr>                             
+                              <tr valign="baseline">
+                                <td nowrap align="right">Estado:</td>
+                                <td align="left">
+                                  <select name="uf_pac" id="uf_pac">
+                                    <option value="">--Selecione--</option> 
+                                    <?php
+									 								  
+									 $sql = "SELECT * FROM tb_estados ORDER BY nome ASC";
+									 $qr = mysql_query($sql) or die(mysql_error());
+									 while($ln = mysql_fetch_assoc($qr)){
+										echo '<option value="'.$ln['uf'].'">'.$ln['uf'].'</option>';
+									 }
+								  ?>                                   
+                                  </select></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Cidade:</td>
+                                <td align="left">                                  
+                                  <select name="cidade_pac" id="cidade_pac">
+                                  <option value="0" disabled="disabled">Escolha um Estado Primeiro</option>
+                                </select></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Cep:</td>
+                                <td align="left"><span id="sprytextfield6">
+                                <input type="text" name="cep_pac" value="" size="10">
+                                <span class="textfieldInvalidFormatMsg">Formato inválido.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Telefone:</td>
+                                <td align="left"><span id="sprytextfield7">
+                                <input type="text" name="fone_pac" value="" size="10">
+                                <span class="textfieldRequiredMsg">Obrigatorio.</span><span class="textfieldInvalidFormatMsg">Apenas Celular.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Email:</td>
+                                <td align="left"><span id="sprytextfield8">
+                                <input name="email_pac" type="text" value="" size="20" maxlength="255">
+                                <span class="textfieldInvalidFormatMsg">Formato inválido.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Convênio:</td>
+                                <td align="left"><span id="spryselect1">
+                                  <select name="conv_id" id="conv_id">
+                                    <option value="">--Selecione--</option>
+                                    <?php
+									do {  
+									?>
+                                    <option value="<?php echo $row_cs_convenio['id_conv']?>"><?php echo $row_cs_convenio['nome_conv']?></option>
+                                    <?php
+									} while ($row_cs_convenio = mysql_fetch_assoc($cs_convenio));
+									  $rows = mysql_num_rows($cs_convenio);
+									  if($rows > 0) {
+										  mysql_data_seek($cs_convenio, 0);
+										  $row_cs_convenio = mysql_fetch_assoc($cs_convenio);
+									  }
+									?>
+                                  </select>
+                                <span class="selectInvalidMsg">Inválido.</span><span class="selectRequiredMsg">.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Situação:</td>
+                                <td align="left"><span id="spryselect2">
+                                  <select name="situacao_pac" id="situacao_pac">
+                                    <option value="">--Selecione--</option>
+                                    <?php
+										do {  
+										?>
+                                    <option value="<?php echo $row_cs_situacao['id_situa']?>"><?php echo $row_cs_situacao['tipo_situa']?></option>
+                                    <?php
+										} while ($row_cs_situacao = mysql_fetch_assoc($cs_situacao));
+										  $rows = mysql_num_rows($cs_situacao);
+										  if($rows > 0) {
+											  mysql_data_seek($cs_situacao, 0);
+											  $row_cs_situacao = mysql_fetch_assoc($cs_situacao);
+										  }
+										?>
+                                  </select>
+                                <span class="selectInvalidMsg">Inválido.</span><span class="selectRequiredMsg">.</span></span></td>
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">Usuário:</td>
+                                <td align="left"><input type="text" name="cadastrador_pac" value="<?php  echo $_SESSION['MM_Username'];?>" 
                                             size="20" maxlength="40" readonly="readonly"></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right">&nbsp;</td>
-                                            <td><input type="submit" value="Gravar"></td>
-                                          </tr>
-                                        </table>
-                                        <input type="hidden" name="MM_insert" value="form1">
-                                      </form>                                
-                                  </div>									
-                              </div>
-								<!-- Fim do Login -->
-							</div>							
-						</div>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-		
+                              </tr>
+                              <tr valign="baseline">
+                                <td nowrap align="right">&nbsp;</td>
+                                <td align="left"><input type="submit" class="btn-success" value="Gravar"></td>
+                              </tr>
+                            </table>
+                            <input type="hidden" name="MM_insert" value="form1">
+                          </form>
+                          
+                         </div>                                					
+                        </div>
+                        <div class="clearfix"></div>
+                        </div>
+                        </div>
 </div>
 
 		<!-- Rodapé -->
 		
 		<?php include('../restrito/rodape01.html');?>
         
-        <script type="text/javascript">
-			var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1", "none", {validateOn:["blur", "change"]});
-			var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2", "custom", {validateOn:["blur", "change"], useCharacterMasking:true, pattern:"(xx)xxxxx-xxxx"});
-			var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3", "email", {validateOn:["blur", "change"], useCharacterMasking:true, isRequired:false});
-			var spryselect1 = new Spry.Widget.ValidationSelect("spryselect1", {invalidValue:"0", validateOn:["blur", "change"]});
-			var spryselect2 = new Spry.Widget.ValidationSelect("spryselect2", {invalidValue:"0", validateOn:["blur", "change"]});
 
-        </script>
+<script type="text/javascript">
+var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1", "custom", {pattern:"xxx.xxx.xxx-xx", validateOn:["blur", "change"], useCharacterMasking:true});
+var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
+var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3");
+var sprytextfield5 = new Spry.Widget.ValidationTextField("data_pac", "date", {format:"dd/mm/yyyy", validateOn:["blur", "change"], useCharacterMasking:true, isRequired:false});
+var sprytextfield6 = new Spry.Widget.ValidationTextField("sprytextfield6", "custom", {pattern:"xx.xxx-xxx", isRequired:false, validateOn:["blur", "change"], useCharacterMasking:true});
+var sprytextfield7 = new Spry.Widget.ValidationTextField("sprytextfield7", "custom", {pattern:"(xx)xxxxx-xxxx", validateOn:["blur", "change"], useCharacterMasking:true});
+var sprytextfield8 = new Spry.Widget.ValidationTextField("sprytextfield8", "email", {validateOn:["blur", "change"], useCharacterMasking:true, isRequired:false});
+var spryselect1 = new Spry.Widget.ValidationSelect("spryselect1", {invalidValue:"0", validateOn:["blur", "change"]});
+var spryselect2 = new Spry.Widget.ValidationSelect("spryselect2", {invalidValue:"0", validateOn:["blur", "change"]});
+</script>
 </body>
 </html>
 <?php

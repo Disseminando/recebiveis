@@ -187,6 +187,12 @@ $perfil=$row_cs_usuario['nome_pf'];
 						</a>
 						</li>
 						<!---->
+                        <li>
+						<a href="../restrito/seguranca01.php">
+                        <br>
+						Segurança
+						</a>
+						</li>
 						<li>	
 						<a href="<?php echo $logoutAction ?>"><br>Fechar</a>
 						</li>

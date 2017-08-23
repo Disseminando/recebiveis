@@ -31,7 +31,7 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
 if (!isset($_SESSION)) {
   session_start();
 }
-$MM_authorizedUsers = "";
+$MM_authorizedUsers = "1,2,4";
 $MM_donotCheckaccess = "true";
 
 // *** Restrict Access To Page: Grant or deny access to this page
@@ -110,9 +110,12 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE clinica SET nome_clin=%s, cnpj_clin=%s, fone_clin=%s, email_clin=%s, situacao_clin=%s, contato_clin=%s, cadastrador_clin=%s WHERE id_clin=%s",
+  $updateSQL = sprintf("UPDATE clinica SET data_clin=%s, nome_clin=%s, cnpj_clin=%s, imposto_clin=%s, desconto_clin=%s, fone_clin=%s, email_clin=%s, situacao_clin=%s, contato_clin=%s, cadastrador_clin=%s WHERE id_clin=%s",
+					   GetSQLValueString($_POST['data_clin'], "date"),
                        GetSQLValueString($_POST['nome_clin'], "text"),
                        GetSQLValueString($_POST['cnpj_clin'], "text"),
+					   GetSQLValueString($_POST['imposto_clin'], "double"),
+					   GetSQLValueString($_POST['descont_clin'], "double"),
                        GetSQLValueString($_POST['fone_clin'], "text"),
                        GetSQLValueString($_POST['email_clin'], "text"),
                        GetSQLValueString($_POST['situacao_clin'], "int"),
@@ -136,7 +139,7 @@ if (isset($_GET['id_clin'])) {
   $colname_cs_clinicas = $_GET['id_clin'];
 }
 mysql_select_db($database_rec01, $rec01);
-$query_cs_clinicas = sprintf("SELECT id_clin, nome_clin, cnpj_clin, fone_clin, email_clin, situacao_clin, contato_clin, cadastrador_clin FROM clinica WHERE id_clin = %s", GetSQLValueString($colname_cs_clinicas, "int"));
+$query_cs_clinicas = sprintf("SELECT id_clin, data_clin, nome_clin, cnpj_clin, imposto_clin, desconto_clin, fone_clin, email_clin, situacao_clin, contato_clin, cadastrador_clin FROM clinica WHERE id_clin = %s", GetSQLValueString($colname_cs_clinicas, "int"));
 $cs_clinicas = mysql_query($query_cs_clinicas, $rec01) or die(mysql_error());
 $row_cs_clinicas = mysql_fetch_assoc($cs_clinicas);
 $totalRows_cs_clinicas = mysql_num_rows($cs_clinicas);
@@ -150,11 +153,31 @@ $totalRows_cs_situacao = mysql_num_rows($cs_situacao);
 <!doctype html>
 <html>
 	<!--Cabeçalho -->
-	<?php include('../restrito/head01.html');?>
-	<script src="../SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
-	<script src="../SpryAssets/SpryValidationSelect.js" type="text/javascript"></script>
-    <link href="../SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css">
-    <link href="../SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css">
+<head>
+		<title>:..Recebiveis..:</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="Clinica, Hospital, Laboratorio, Medicos, Plano de Saude, Faturamento, Credenciamento" />
+		<script type="application/x-javascript"> addEventListener("load", function() {setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+        <link href='http://fonts.googleapis.com/css?family=Monda:400,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
+		<link href="../css/owl.carousel.css" rel="stylesheet">
+        <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="../css/style.css" rel="stylesheet" type="text/css"/>
+		<script src="../js/jquery-2.1.4.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/move-top.js"></script>
+        <script type="text/javascript" src="../js/easing.js"></script>
+        <script src="../SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+        <script src="../SpryAssets/SpryValidationSelect.js" type="text/javascript"></script>
+        <link href="../SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css">
+        <link href="../SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css">
+        <script src="../SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+		<script src="../SpryAssets/SpryValidationSelect.js" type="text/javascript"></script>
+        <link href="../SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css">
+        <link href="../SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css">
+	</head>
+  <!--Fim do Cabeçalho-->
 	<body>
 		<div class="header" id="home">
 			<div class="header-top">
@@ -186,104 +209,99 @@ $totalRows_cs_situacao = mysql_num_rows($cs_situacao);
 						<a href="<?php echo $logoutAction ?>">Sair</a>
 						</li>
 						<!--script-->
-					  <script type="text/javascript">
-						jQuery(document).ready(function($) {
-						$(".scroll").click(function(event){		
-						event.preventDefault();
-						$('html,body').animate({scrollTop:$(this.hash).offset().top},900);
-						});
-						});
+					    <script type="text/javascript">
+							jQuery(document).ready(function($) {
+							$(".scroll").click(function(event){		
+							event.preventDefault();
+							$('html,body').animate({scrollTop:$(this.hash).offset().top},900);
+							});
+							});
 						</script>
 						<!--script-->
 					</ul>
-					</div><!-- /.navbar-collapse -->
-					<div class="clearfix"></div>
-				  </div><!-- /.container-fluid -->
-				</nav>
-    </div>
-			
-		</div>
-		<!-- Identifica Usuario Logado -->		
-		<?php include('../restrito/identifica01.php');?>
-		
-		<?php include('../restrito/Menu_lateral.php');?>
-        
-					<div class="col-md-8 ser-fet">
-						<h3>:..Clínica - Consulta..:</h3>
-						<span class="line"></span>
-						<div class="features">
-							<div class="col-md-6 fet-pad">
-								<div class="div-margin">
-									<div class="col-md-3 fet-pad wid">										
-									</div>
-									<div class="col-md-9 fet-pad wid2">
-                                      <form method="post" name="form1" action="<?php echo $editFormAction; ?>">
-                                        <table width="100%" align="center" cellpadding="10" cellspacing="10">
-                                          <tr valign="baseline">
-                                            <td width="8%" align="right" nowrap><strong>Nome:</strong></td>
-                                            <td width="92%"><input name="nome_clin" type="text" value="<?php echo htmlentities($row_cs_clinicas['nome_clin'], ENT_COMPAT, 'utf-8'); ?>" size="45" maxlength="255"></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>CNPJ:</strong></td>
-                                            <td><input type="text" name="cnpj_clin" value="<?php echo htmlentities($row_cs_clinicas['cnpj_clin'], ENT_COMPAT, 'utf-8'); ?>" size="20"></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Telefone:</strong></td>
-                                            <td><input type="text" name="fone_clin" value="<?php echo htmlentities($row_cs_clinicas['fone_clin'], ENT_COMPAT, 'utf-8'); ?>" size="20"></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Email:</strong></td>
-                                            <td><input name="email_clin" type="text" value="<?php echo htmlentities($row_cs_clinicas['email_clin'], ENT_COMPAT, 'utf-8'); ?>" size="45" maxlength="255"></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Situação:</strong></td>
-                                            <td><label for="situacao_clin"></label>
-                                              <select name="situacao_clin" id="situacao_clin">
-                                                <?php
-do {  
-?>
-                                                <option value="<?php echo $row_cs_situacao['id_situa']?>"<?php if (!(strcmp($row_cs_situacao['id_situa'], $row_cs_clinicas['situacao_clin']))) {echo "selected=\"selected\"";} ?>><?php echo $row_cs_situacao['tipo_situa']?></option>
-                                                <?php
-} while ($row_cs_situacao = mysql_fetch_assoc($cs_situacao));
-  $rows = mysql_num_rows($cs_situacao);
-  if($rows > 0) {
-      mysql_data_seek($cs_situacao, 0);
-	  $row_cs_situacao = mysql_fetch_assoc($cs_situacao);
-  }
-?>
-                                            </select></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Contato:</strong></td>
-                                            <td><input name="contato_clin" type="text" value="<?php echo htmlentities($row_cs_clinicas['contato_clin'], ENT_COMPAT, 'utf-8'); ?>" size="45" maxlength="255"></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right"><strong>Usuário:</strong></td>
-                                            <td><input name="cadastrador_clin" type="text" value="<?php  echo $_SESSION['MM_Username'];?>" size="20" readonly="readonly"></td>
-                                          </tr>
-                                          <tr valign="baseline">
-                                            <td nowrap align="right">&nbsp;</td>
-                                            <td><input type="submit" value="Gravar"></td>
-                                          </tr>
-                                        </table>
-                                        <input type="hidden" name="MM_update" value="form1">
-                                        <input type="hidden" name="id_clin" value="<?php echo $row_cs_clinicas['id_clin']; ?>">
-                                      </form>                                      
-                                      </div>
-									<div class="clearfix"></div>
-								</div>
-								<!-- Fim do Login -->
-							</div>							
-						</div>
 					</div>
 					<div class="clearfix"></div>
-				</div>
-			</div>
-		
-		</div>
-
-		<!-- Rodapé -->
-		
+				  </div>
+				</nav>
+            </div>			
+		</div>	
+		<?php include('../restrito/identifica01.php');?>	
+		<?php include('../restrito/Menu_lateral.php');?>        
+					<div class="col-md-8 ser-fet">
+						<h3>:..Clínica - Consulta..:</h3>
+						<span class="line"></span>                           
+			             <div class="w3-container">
+                          <br>																				
+                      <form method="post" name="form1" action="<?php echo $editFormAction; ?>">
+                        <table width="100%" align="center" cellpadding="10" cellspacing="10">
+                          <tr valign="baseline">
+                            <td width="8%" align="right" nowrap><strong>Data:</strong></td>
+                            <td width="92%" align="left"><input name="data_clin" type="text" id="data_clin" value="<?php echo htmlentities($row_cs_clinicas['data_clin'], ENT_COMPAT, 'utf-8'); ?>" size="10" readonly></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td width="8%" align="right" nowrap><strong>Nome:</strong></td>
+                            <td width="92%" align="left"><input name="nome_clin" type="text" value="<?php echo htmlentities($row_cs_clinicas['nome_clin'], ENT_COMPAT, 'utf-8'); ?>" size="30" maxlength="255"></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td nowrap align="right"><strong>CNPJ:</strong></td>
+                            <td align="left"><input type="text" name="cnpj_clin" value="<?php echo htmlentities($row_cs_clinicas['cnpj_clin'], ENT_COMPAT, 'utf-8'); ?>" size="20"></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td width="8%" align="right" nowrap><strong>Imposto %:</strong></td>
+                            <td width="92%" align="left"><input name="imposto_clin" type="text" id="imposto_clin" value="<?php echo $row_cs_clinicas['imposto_clin']; ?>" size="10"></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td width="8%" align="right" nowrap><strong>Desconto %:</strong></td>
+                            <td width="92%" align="left"><input name="descont_clin" type="text" id="descont_clin" value="<?php echo htmlentities($row_cs_clinicas['desconto_clin'], ENT_COMPAT, 'utf-8'); ?>" size="10"></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td nowrap align="right"><strong>Telefone:</strong></td>
+                            <td align="left"><input type="text" name="fone_clin" value="<?php echo htmlentities($row_cs_clinicas['fone_clin'], ENT_COMPAT, 'utf-8'); ?>" size="20"></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td nowrap align="right"><strong>Email:</strong></td>
+                            <td align="left"><input name="email_clin" type="text" value="<?php echo htmlentities($row_cs_clinicas['email_clin'], ENT_COMPAT, 'utf-8'); ?>" size="30" maxlength="255"></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td nowrap align="right"><strong>Situação:</strong></td>
+                            <td align="left"><label for="situacao_clin"></label>
+                              <select name="situacao_clin" id="situacao_clin">
+                                <?php
+                                do {  
+                                ?>
+                                <option value="<?php echo $row_cs_situacao['id_situa']?>"<?php if (!(strcmp($row_cs_situacao['id_situa'], $row_cs_clinicas['situacao_clin']))) {echo "selected=\"selected\"";} ?>><?php echo $row_cs_situacao['tipo_situa']?></option>
+                                <?php
+                                } while ($row_cs_situacao = mysql_fetch_assoc($cs_situacao));
+                                  $rows = mysql_num_rows($cs_situacao);
+                                  if($rows > 0) {
+                                      mysql_data_seek($cs_situacao, 0);
+                                      $row_cs_situacao = mysql_fetch_assoc($cs_situacao);
+                                  }
+                                ?>
+                            </select></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td nowrap align="right"><strong>Contato:</strong></td>
+                            <td align="left"><input name="contato_clin" type="text" value="<?php echo htmlentities($row_cs_clinicas['contato_clin'], ENT_COMPAT, 'utf-8'); ?>" size="30" maxlength="255"></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td nowrap align="right"><strong>Usuário:</strong></td>
+                            <td align="left"><input name="cadastrador_clin" type="text" value="<?php  echo $_SESSION['MM_Username'];?>" size="20" readonly="readonly"></td>
+                          </tr>
+                          <tr valign="baseline">
+                            <td nowrap align="right">&nbsp;</td>
+                            <td align="left"><input type="submit" value="Gravar" class="btn-success"></td>
+                          </tr>
+                        </table>
+                        <input type="hidden" name="MM_update" value="form1">
+                        <input type="hidden" name="id_clin" value="<?php echo $row_cs_clinicas['id_clin']; ?>">
+                      </form>                                    					
+                      </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>                    
+                    </div>
+		<!-- Rodapé -->		
 		<?php include('../restrito/rodape01.html');?>   
 </body>
 </html>

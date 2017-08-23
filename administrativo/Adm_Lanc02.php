@@ -112,10 +112,10 @@ if (isset($_POST['medico'])) {
 $today = date("n");  
 
 mysql_select_db($database_rec01, $rec01);
-$query_cs_lancamento = sprintf("SELECT id_lanc, data_lanc, clin_id, med_id, pac_id, conv_id, proc_id, valor_lanc, pag_id, tx_mat_med_lanc, cadastrador_lanc, id_clin, nome_clin, id_pag, nome_pag FROM lancamento, clinica, tpo_pagamento
-WHERE med_id = %s 
-AND clin_id = id_clin 
-AND pag_id = id_pag 
+$query_cs_lancamento = sprintf("SELECT id_lanc, data_lanc, clin_id_lanc, med_id_lanc, pac_id_lanc, conv_id_lanc, proc_id_lanc, valor_lanc, tipo_id_pag, tx_mat_med, cadastrador_lanc, id_clin, nome_clin, id_pag, nome_pag FROM lancamento, clinica, tpo_pagamento
+WHERE med_id_lanc = %s 
+AND clin_id_lanc = id_clin 
+AND tipo_id_pag = id_pag 
 AND Month(data_lanc)='$today' 
 ORDER BY data_lanc ASC", GetSQLValueString($colname_cs_lancamento, "int"));
 $cs_lancamento = mysql_query($query_cs_lancamento, $rec01) or die(mysql_error());
@@ -129,7 +129,7 @@ $row_cs_medico = mysql_fetch_assoc($cs_medico);
 $totalRows_cs_medico = mysql_num_rows($cs_medico);
 
 mysql_select_db($database_rec01, $rec01);
-$query_cs_total = "SELECT sum(valor_lanc), sum(tx_mat_med_lanc), med_id FROM lancamento WHERE med_id='$colname_cs_lancamento'";
+$query_cs_total = "SELECT sum(valor_lanc), sum(tx_mat_med), med_id_lanc FROM lancamento WHERE med_id_lanc='$colname_cs_lancamento'";
 $cs_total = mysql_query($query_cs_total, $rec01) or die(mysql_error());
 $row_cs_total = mysql_fetch_assoc($cs_total);
 $totalRows_cs_total = mysql_num_rows($cs_total);
@@ -215,7 +215,7 @@ $totalRows_cs_total = mysql_num_rows($cs_total);
         <?php include('../restrito/identifica01.php');?>		
 			<?php include('../restrito/Menu_lateral.php');?>
                         <div class="col-md-8 ser-fet">
-						<h3>:..Lançamento - Histórico..:</h3>
+						<h3>:..Consulta - Lançamento..:</h3>
 						<span class="line"></span>
 						<div class="features">
 							<div>
@@ -223,12 +223,12 @@ $totalRows_cs_total = mysql_num_rows($cs_total);
 									<div>										
 									</div>
 									<div>
-                                       <br>
+                                       <br>									  
                                       <form name="form1" method="post" action="">
-                                        <table width="100%" border="0" cellspacing="10" cellpadding="10">
+                                        <table width="auto" border="0" cellspacing="10" cellpadding="10">
                                           <tr>
-                                            <th width="10%" align="left" scope="row">Médico:</th>
-                                            <td width="39%"><span id="spryselect1">                                              
+                                            <th width="auto" align="left" scope="row">Médico:</th>
+                                            <td width="auto"><span id="spryselect1">                                              
                                               <select name="medico" id="medico">
                                               <option value="0">Selecione...</option>
                                                 <?php
@@ -249,21 +249,22 @@ $totalRows_cs_total = mysql_num_rows($cs_total);
                                             <td width="51%"><input type="submit" name="Consultar" id="Consultar" value="Consultar"></td>
                                           </tr>
                                         </table>
-                                      </form>
-                                      <br>
+                                      </form>                                      
+									  <br>									  
                              <h4>Resultado..:</h4>
                              <br>
                              <?php
 									      $res=$totalRows_cs_lancamento;									      
 										  if($res>0)
 										  {?>
+							 <?php echo $cs_lancamento['nome_med'];?>
                              <table width="100%" border="1" cellpadding="10" cellspacing="10">
                                <tr>
-                                 <td width="19%" align="center" bgcolor="#999999"><strong>Data</strong></td>
-                                 <td width="20%" align="center" bgcolor="#999999"><strong>Clínica</strong></td>
-                                 <td width="19%" align="center" bgcolor="#999999"><strong>Valor R$</strong></td>
-                                 <td width="23%" align="center" bgcolor="#999999"><strong>Taxa-Mat-Med</strong></td>
-                                 <td width="19%" align="center" bgcolor="#999999"><strong>Pagamento</strong></td>
+                                 <td width="19%" align="center" bgcolor="#FFF8DC"><strong>Data</strong></td>
+                                 <td width="20%" align="center" bgcolor="#FFF8DC"><strong>Clínica</strong></td>
+                                 <td width="19%" align="center" bgcolor="#FFF8DC"><strong>Valor R$</strong></td>
+                                 <td width="23%" align="center" bgcolor="#FFF8DC"><strong>Taxa-Mat-Med</strong></td>
+                                 <td width="19%" align="center" bgcolor="#FFF8DC"><strong>Pagamento</strong></td>
                                  
                                </tr>
                                <?php do { ?>
@@ -271,25 +272,98 @@ $totalRows_cs_total = mysql_num_rows($cs_total);
                                    <td><?php echo $row_cs_lancamento['data_lanc']; ?></td>
                                    <td><?php echo $row_cs_lancamento['nome_clin']; ?></td>
                                    <td align="right"><?php echo $row_cs_lancamento['valor_lanc']; ?></td>                                   
-                                   <td align="right"><?php echo $row_cs_lancamento['tx_mat_med_lanc']; ?></td>
+                                   <td align="right"><?php echo $row_cs_lancamento['tx_mat_med']; ?></td>
                                    <td><?php echo $row_cs_lancamento['nome_pag']; ?></td>                                   
                                  </tr>
                                  <?php } while ($row_cs_lancamento = mysql_fetch_assoc($cs_lancamento)); ?>                                 
                              </table>
-                                 <br>
-                                 <table width="100%" border="0" cellspacing="10" cellpadding="10">
-                                   <tr>
-                                     <th width="13%" bgcolor="#999999" scope="row">&nbsp;</th>
-                                     <td width="13%" bgcolor="#999999">&nbsp;</td>
-                                     <td width="42%" bgcolor="#999999">&nbsp;</td>
-                                     <td width="16%" bgcolor="#999999"><strong>Valor Total R$</strong></td>
-                                     <td width="16%" align="right" bgcolor="#999999"><strong><center><?php 
-									                                                   $v1=$row_cs_total['sum(valor_lanc)'];
-																					   $t1=$row_cs_total['sum(tx_mat_med_lanc)'];
-																					   $soma= $v1+$t1;
-																					   echo $soma; ?></center></strong></td>
-                                   </tr>
-                                 </table>
+                                 <table width="auto" border="0" cellspacing="20" cellpadding="10">
+									<tr>
+									<td width="26%"><font color="blue"><?php 
+									    $nome=mysql_query("select nome_med from medico where id_med='$colname_cs_lancamento'");
+										$result_nome=mysql_fetch_assoc($nome);
+										echo "Médico(a):&nbsp&nbsp".$result_nome['nome_med'];
+									
+									 ;?></font></td>
+									</tr>
+									<tr>
+                                     <th  bgcolor="#FFF8DC" scope="row">&nbsp;</th>
+                                     <td  bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td  bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td  bgcolor="#FFF8DC"><strong>Total Consulta</strong></td>
+                                     <td  align="right" bgcolor="#FFF8DC"><strong><center><?php
+									    $cs=mysql_query("select sum(valor_lanc), repasse_cons from lancamento, medico 
+										where med_id_lanc='$colname_cs_lancamento'
+										and tipo_id_age=1
+										and med_id_lanc=id_med");
+                                        $resultcs=mysql_fetch_assoc($cs);
+										$repassecs=(($resultcs['sum(valor_lanc)']*$resultcs['repasse_cons'])/100);
+										echo number_format($repassecs,2);
+								    ?>
+									
+								    </center></strong></td>
+                                    </tr>
+									<tr>
+                                     <th  bgcolor="#FFF8DC">&nbsp;</th>
+                                     <td  bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td  bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td  bgcolor="#FFF8DC"><strong>Total Exame</strong></td>
+                                     <td  align="right" bgcolor="#FFF8DC"><strong><center><?php
+									    $ex=mysql_query("select sum(valor_lanc), sum(tx_mat_med), repasse_exam from lancamento, medico
+										where med_id_lanc='$colname_cs_lancamento'
+										and med_id_lanc=id_med
+										and tipo_id_age=2
+										");
+										$resultex=mysql_fetch_assoc($ex);
+										$repasseex=$resultex['repasse_exam'];
+										$soma=((($resultex['sum(valor_lanc)'] + $resultex['sum(tx_mat_med)'])*$repasseex)/100);
+										echo number_format($soma,2);
+									?>
+								    </center></strong></td>
+                                    </tr>
+									<tr>
+                                     <th  bgcolor="#FFF8DC">&nbsp;</th>
+                                     <td  bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td  bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td  bgcolor="#FFF8DC"><strong>Total Procedimento</strong></td>
+                                     <td  align="right" bgcolor="#FFF8DC"><strong><center><?php
+									    $pr=mysql_query("select sum(valor_lanc), repasse_proc from lancamento, medico
+										where med_id_lanc='$colname_cs_lancamento'
+										and med_id_lanc=id_med
+										and proc_id_lanc>0
+										");
+										$resultpr=mysql_fetch_assoc($pr);
+										$repassepr=$resultpr['repasse_proc'];
+										$somapr=(($resultpr['sum(valor_lanc)']*$repassepr)/100);
+										echo number_format($somapr,2);
+								   
+								    ?>
+								    </center></strong></td>
+                                    </tr>
+									<tr>
+                                     <th width="13%" bgcolor="#FFF8DC">&nbsp;</th>
+                                     <td width="13%" bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td width="42%" bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td width="60%" bgcolor="#FFF8DC"><strong>Total Taxa</strong></td>
+                                     <td width="16%" align="right" bgcolor="#FFF8DC"><strong><center><?php                                             
+								        $t1=$row_cs_total['sum(tx_mat_med)'];																					   
+								        echo number_format($t1,2);
+								    ?>
+									</center></strong></td>
+                                    </tr>
+								    <tr>
+                                     <th width="13%" bgcolor="#FFF8DC">&nbsp;</th>
+                                     <td width="13%" bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td width="42%" bgcolor="#FFF8DC">&nbsp;</td>
+                                     <td width="60%"  bgcolor="#FFF8DC"><strong>Valor Total</strong></td>
+                                     <td width="16%" align="right" bgcolor="#FFF8DC"><strong><center><?php 
+									    $total=($repassecs+$soma+$somapr+$t1);
+										echo number_format($total,2);
+								    ?>
+								    </center></strong></td>
+                                    </tr>
+								   <br>								   
+                                 </table>								 
                                  <?php } else {			   
 										 
 										          echo "Não foi encontrado nenhum registro.";

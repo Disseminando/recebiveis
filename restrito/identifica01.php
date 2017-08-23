@@ -71,26 +71,20 @@ $totalRows_cs_usuario = mysql_num_rows($cs_usuario);
 $perfil=$row_cs_usuario['nome_pf'];
 ?>
 <html>
-	<!--Cabeçalho -->
-	<?php include('head01.html');?>
 	<body>		
-		<div class="style-label">
+
 			<div class="container">
 				<ul class="box-shadow effect2">
-					<li class="col-md-3">						
-						<div class="label-text">
-						<h3><font color="white" size="+2"><?php  echo "Usuário:&nbsp".$_SESSION['MM_Username'];?></font></h3><br>
-                        <h3><font color="white" size="+2"><?php  echo "Perfil:&nbsp".$perfil=$row_cs_usuario['nome_pf'];?></font></h3><br>
-                        <h3><font color="white" size="+2"><?php  date_default_timezone_set('America/Sao_Paulo');
+					<li>
+                    	<h3><font color="white" size="+2"><?php  date_default_timezone_set('America/Sao_Paulo');
 																	$date = date('d-m-Y -- H:i');
-																	echo $date;
-														            ?></font></h3>
-						
-						</div>
+																	echo "Data:&nbsp;".$date;
+														            ?></font></h3><br>				
+						<h3><font color="white" size="+2"><?php  echo "Usuário:&nbsp".$_SESSION['MM_Username'];?></font></h3><br>
+                        <h3><font color="white" size="+2"><?php  echo "Perfil:&nbsp".$perfil=$row_cs_usuario['nome_pf'];?></font></h3><br>                        
 					</li>
-				  <div class="clearfix"></div>
 				</ul>
 			</div>
-		</div>
+
 	</body>
 </html>

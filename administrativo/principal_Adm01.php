@@ -104,15 +104,26 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$usuario=$_SESSION['MM_Username'];
+$maxRows_cs_agenda = 50;
+$pageNum_cs_agenda = 0;
+if (isset($_GET['pageNum_cs_agenda'])) {
+  $pageNum_cs_agenda = $_GET['pageNum_cs_agenda'];
+}
+$startRow_cs_agenda = $pageNum_cs_agenda * $maxRows_cs_agenda;
 
 mysql_select_db($database_rec01, $rec01);
-$query_cs_usuario = "SELECT id_ace, usu_data, usu_id, login, senha, perfil_id, situacao_ace, cadastrador_ace, id_pf, nome_pf FROM acesso, perfil WHERE perfil_id=id_pf AND login='$usuario'";
-$cs_usuario = mysql_query($query_cs_usuario, $rec01) or die(mysql_error());
-$row_cs_usuario = mysql_fetch_assoc($cs_usuario);
-$totalRows_cs_usuario = mysql_num_rows($cs_usuario);
+$query_cs_agenda = "SELECT data_age, clin_id_age, med_id_age, tipo_id, cpf_pac_age, id_clin, nome_clin, id_med, nome_med, id_tp_age, tipo_age FROM agenda, clinica, medico, agenda_tipo WHERE clin_id_age=id_clin AND med_id_age=id_med AND tipo_id=id_tp_age ORDER BY data_age DESC";
+$query_limit_cs_agenda = sprintf("%s LIMIT %d, %d", $query_cs_agenda, $startRow_cs_agenda, $maxRows_cs_agenda);
+$cs_agenda = mysql_query($query_limit_cs_agenda, $rec01) or die(mysql_error());
+$row_cs_agenda = mysql_fetch_assoc($cs_agenda);
 
-$perfil=$row_cs_usuario['nome_pf'];
+if (isset($_GET['totalRows_cs_agenda'])) {
+  $totalRows_cs_agenda = $_GET['totalRows_cs_agenda'];
+} else {
+  $all_cs_agenda = mysql_query($query_cs_agenda);
+  $totalRows_cs_agenda = mysql_num_rows($all_cs_agenda);
+}
+$totalPages_cs_agenda = ceil($totalRows_cs_agenda/$maxRows_cs_agenda)-1;
 ?>
 <!doctype html>
 <html>
@@ -177,7 +188,7 @@ $perfil=$row_cs_usuario['nome_pf'];
 						<a href="<?php echo $logoutAction ?>"><br>Fechar</a>
 						</li>
 						<!--script-->
-						<script type="text/javascript">
+					  <script type="text/javascript">
 						jQuery(document).ready(function($) {
 						$(".scroll").click(function(event){		
 						event.preventDefault();
@@ -192,30 +203,34 @@ $perfil=$row_cs_usuario['nome_pf'];
 					</div><!-- /.container-fluid -->
 				</nav>
 			</div>
-            </div>
+    </div>
                     <!-- Identifica Usuario Logado -->		
-                    <?php include('../restrito/identifica01.php');?>					
-                    <?php include('../restrito/Menu_lateral.php');?>                                     
-                    <!--Inicio Area de Conteudo -->
+                    <?php include('../restrito/identifica01.php');?>				
+                    <?php include('../restrito/Menu_lateral.php');?>                                   
+<!--Inicio Area de Conteudo -->
 					<div class="col-md-8 ser-fet">
 						<h3>:..Quadro de Avisos..:</h3>
-						<span class="line"></span>
-						<div class="features">
-							<div class="col-md-6 fet-pad">
-								<div class="div-margin">
-									<div class="col-md-3 fet-pad wid">										
-									</div>
-									<div class="col-md-9 fet-pad wid2">
-                                     <br>
-                                       <br>
-                                        <br>
-                                         <br>
-                                         <br>
-                                    </div>
-									<div class="clearfix"></div>
-								</div>
-							</div>							
-						</div>
+						<span class="line"></span>                           
+			             <div class="w3-container">
+                           <table width="100%" border="1" cellpadding="10" cellspacing="10">
+                             <tr>
+                               <td width="10%" bgcolor="#CCCCCC"><strong>Data</strong></td>
+                               <td width="18%" bgcolor="#CCCCCC"><strong>Clínica</strong></td>
+                               <td width="30%" bgcolor="#CCCCCC"><strong>Médico</strong></td>                               
+                               <td width="30%" bgcolor="#CCCCCC"><strong>Paciente</strong></td>
+                               <td width="10%" bgcolor="#CCCCCC"><strong>Tipo</strong></td>
+                             </tr>
+                             <?php do { ?>
+                               <tr>
+                                 <td><?php echo $row_cs_agenda['data_age']; ?></td>
+                                 <td><?php echo $row_cs_agenda['nome_clin']; ?></td>
+                                 <td><?php echo $row_cs_agenda['nome_med']; ?></td>                                 
+                                 <td><?php echo $row_cs_agenda['cpf_pac_age']; ?></td>
+                                 <td><?php echo $row_cs_agenda['tipo_age']; ?></td>
+                               </tr>
+                               <?php } while ($row_cs_agenda = mysql_fetch_assoc($cs_agenda)); ?>
+                           </table>
+                      </div>
 					</div>					
 				</div>
 			</div>
@@ -225,10 +240,10 @@ $perfil=$row_cs_usuario['nome_pf'];
          
 		<!-- Rodapé -->
 		
-		<?php include('../restrito/rodape01.html');?>    
+		<?php include('../restrito/rodape01.html');?>  
 
 </body>
 </html>
 <?php
- mysql_free_result($cs_usuario);
+mysql_free_result($cs_agenda);
 ?>

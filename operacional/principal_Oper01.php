@@ -210,8 +210,8 @@ $totalRows_cs_contas = mysql_num_rows($cs_contas);
 			</div>
             </div>
                     <!-- Identifica Usuario Logado -->		
-                    <!--<?php include('../restrito/identifica01.php');?>-->					
-                    <!--<?php include('./Menu_Operacional.php');?>-->                                  
+                    <?php include('../restrito/identifica01.php');?>				
+                    <?php include('./Menu_Operacional.php');?>                                  
                     <!--Inicio Area de Conteudo -->
 					<div class="col-md-8 ser-fet">
 						<h3>:..Quadro de Avisos..:</h3>
@@ -278,7 +278,7 @@ $totalRows_cs_contas = mysql_num_rows($cs_contas);
          
 		<!-- Rodapé -->
 		
-		<!--<?php include('../restrito/rodape01.html');?>-->    
+		<?php include('../restrito/rodape01.html');?>    
 
 </body>
 </html>

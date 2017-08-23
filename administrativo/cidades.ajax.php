@@ -4,7 +4,7 @@ header( 'Content-type: application/xml; charset="utf-8"', true );
 
 require_once('../Connections/rec01.php');
 
-$cod_estados = mysql_real_escape_string( $_REQUEST['clin_id'] );
+$cod_estados = mysql_real_escape_string( $_REQUEST['clin_id_lanc'] );
 
 $cidades = array();
 

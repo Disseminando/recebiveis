@@ -82,27 +82,23 @@ if (isset($_POST['login'])) {
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <meta name="keywords" content="Clinica, Hospital, Laboratorio, Medicos, Plano de Saude, Faturamento, Credenciamento" />
-    <script type="application/x-javascript"> addEventListener("load", function() {setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+			<script type="application/x-javascript"> addEventListener("load", function() {setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!meta charset utf="8">
-		<!--fonts-->
 			<link href='http://fonts.googleapis.com/css?family=Monda:400,700' rel='stylesheet' type='text/css'>
 			<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
-		<!--fonts-->
-		<!--owlcss-->
-<link href="css/owl.carousel.css" rel="stylesheet">
-		<!--bootstrap-->
+			<link href="css/owl.carousel.css" rel="stylesheet">
 			<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<!--coustom css-->
 			<link href="css/style.css" rel="stylesheet" type="text/css"/>
-		<!--default-js-->
 			<script src="js/jquery-2.1.4.min.js"></script>
-		<!--bootstrap-js-->
 			<script src="js/bootstrap.min.js"></script>
-		<!--script-->
 			<script type="text/javascript" src="js/move-top.js"></script>
 			<script type="text/javascript" src="js/easing.js"></script>
-	        <script src="SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
-            <link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css">
+			<script src="SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+			<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900'>
+			<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+			<link rel="stylesheet" href="css/style_login.css">
+    <link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css">
 </head>
 	<body>
 	  <div class="header" id="home">
@@ -161,98 +157,39 @@ if (isset($_POST['login'])) {
 				<span class="sr-only">Next</span>
 				</a>
 				</div>
-			</div>
-		</div>
-		<div class="style-label">
-			<div class="container">
-				<ul class="box-shadow effect2">					
-					<li class="col-md-3">						
-						<div class="label-text">
-						<h3><font color="white">Administração</font></h3>						
-						</div>
-					</li>
-					<li class="col-md-3">						
-						<div class="label-text">
-						<h3><font color="white">Planejamento</font></h3>						
-						</div>
-					</li>
-                    <li class="col-md-3">						
-						<div class="label-text">
-						<h3><font color="white">Controle</font></h3>						
-						</div>
-					</li>
-                    <li class="col-md-3">						
-						<div class="label-text">
-						<h3><font color="white">Segurança</font></h3>						
-						</div>
-					</li>
-					<div class="clearfix"></div>
-				</ul>
-			</div>
-		</div>
-		<div class="content">
-			<div class="service_features" id="features">
-				<div class="container">
-					<div class="col-md-4 ser-fet">												
-						<span class="line"></span>
-						<div class="services">
-							<div class="menu-grid">						
-						</div>
-						</div>
-					</div>
-					<div class="col-md-8 ser-fet">
-						<h3>Acesso Restrito</h3>
-						<span class="line"></span>
-						<div class="features">
-							<div class="col-md-6 fet-pad">
-								<div class="div-margin">
-									<div class="col-md-3 fet-pad wid">
-										<span class="glyphicon glyphicon-user aim-icn" aria-hidden="true"></span>
-									</div>
-									<div class="col-md-9 fet-pad wid2">
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <br>
-								      <form name="login" method="POST" action="<?php echo $loginFormAction; ?>">
-								        <table width="100%" border="0" cellspacing="10" cellpadding="10">
-								          <tr>
-								            <th width="11%" scope="row">Usuario&nbsp;</th>
-								            <td width="89%"><span id="sprytextfield1">
-								              <input name="login" type="text" id="login" maxlength="20">
-							                <span class="textfieldRequiredMsg">Obrigatorio.</span></span></td>
-							              </tr>
-								          <tr>
-								            <th scope="row">Senha&nbsp;</th>
-								            <td><span id="sprytextfield2">
-								              <input name="senha" type="password" id="senha" maxlength="20">
-							                <span class="textfieldRequiredMsg">Obrigatorio.</span></span></td>
-							              </tr>
-								          <tr>
-								            <th scope="row">&nbsp;</th>
-								            <td>&nbsp;<input type="submit" name="ok" id="ok" value="Acessar"></td>
-							              </tr>
-							            </table>
-								      </form>
-								     </div>
-								</div>
-								<!-- Fim do Login -->
-							</div>							
-						</div>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-		
-		</div>
-
-		<!-- Rodapé -->		
+        </div>
+</div>
+					<!--Inicio do formulario de Login -->
+						<div class="pen-title"> </div>
+						<div class="module form-module">
+						  <div class="toggle"><i class="fa fa-times fa-pencil"></i>
+							
+						  </div>
+						  <div class="form">
+							<h2>Informe Usuário e Senha</h2>
+							<form name="login" method="POST" action="<?php echo $loginFormAction; ?>">
+							  <span id="sprytextfield1">
+							  <input name="login" type="text" id="login" maxlength="20" placeholder="Usuário"/>
+							  <span class="textfieldRequiredMsg">Obrigatorio.</span></span><span id="sprytextfield2">
+							  <input name="senha" type="password" id="senha" maxlength="20" placeholder="Senha"/>
+							  <span class="textfieldRequiredMsg">Obrigatorio.</span></span>
+							  <button type="submit" name="ok" id="ok" value="Acessar">Acessar</button>
+							</form>
+						  </div>
+                            <br>
+                            <br>                            
+                            </div>
+							<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+							<script src='https://codepen.io/andytran/pen/vLmRVp.js'></script>
+							<script src="js/index.js"></script>                      
+	<!--Fim do formulario -->
+                    
+<!-- Rodapé -->		
 		<?php include('./restrito/rodape01.html');?>
         
-        <script type="text/javascript">
+    <script type="text/javascript">
 var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1", "none", {validateOn:["blur", "change"]});
-var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2", "none", {validateOn:["blur", "change"]});
-
+var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2", "none", {validateOn:["blur"]});
     </script>
-	</body>
+</body>
 </html>

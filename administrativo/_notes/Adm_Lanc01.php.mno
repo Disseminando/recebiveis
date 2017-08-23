@@ -9,4 +9,9 @@
 	<infoitem key="UD_cs_convenio" value="name:id_conv;datatype:int,name:nome_conv;datatype:string" />
 	<infoitem key="UD_cs_procedimento" value="name:id_proc;datatype:int,name:nome_proc;datatype:string" />
 	<infoitem key="UD_cs_pagamento" value="name:id_pag;datatype:int,name:nome_pag;datatype:string" />
+	<infoitem key="UD_cs_clinica" value="name:id_clin;datatype:int,name:nome_clin;datatype:string" />
+	<infoitem key="UD_cs_tipo" value="name:id_tp_age;datatype:int,name:tipo_age;datatype:string" />
+	<infoitem key="UD_cs_agenda_situacao" value="name:id_sit_age;datatype:int,name:tipo_sit_age;datatype:string" />
+	<infoitem key="UD_cs_tipo_pagamento" value="name:id_pag;datatype:int,name:nome_pag;datatype:string" />
+	<infoitem key="UD_cs_procedimentos" value="name:id_proc;datatype:int,name:nome_proc;datatype:string" />
 </info>

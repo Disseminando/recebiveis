@@ -3,27 +3,17 @@
 	<head>		
 		<script type="application/x-javascript"> addEventListener("load", function() {setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 		<!meta charset utf="8">
-		<!--fonts-->
 			<link href='http://fonts.googleapis.com/css?family=Monda:400,700' rel='stylesheet' type='text/css'>
 			<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
-		<!--fonts-->
-		<!--owlcss-->
-		<link href="../css/owl.carousel.css" rel="stylesheet">
-		<!--bootstrap-->
+			<link href="../css/owl.carousel.css" rel="stylesheet">
 			<link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<!--coustom css-->
 			<link href="../css/style.css" rel="stylesheet" type="text/css"/>
-		<!--default-js-->
 			<script src="../js/jquery-2.1.4.min.js"></script>
-		<!--bootstrap-js-->
 			<script src="../js/bootstrap.min.js"></script>
-		<!--script-->
 			<script type="text/javascript" src="../js/move-top.js"></script>
 			<script type="text/javascript" src="../js/easing.js"></script>
-	<script src="../SpryAssets/SpryMenuBar.js" type="text/javascript"></script>
-		
-		<!--script-->
-    <link href="../SpryAssets/SpryMenuBarVertical.css" rel="stylesheet" type="text/css">
+	        <script src="../SpryAssets/SpryMenuBar.js" type="text/javascript"></script>
+    		<link href="../SpryAssets/SpryMenuBarVertical.css" rel="stylesheet" type="text/css">
 </head>
 	<body>
 		<div class="content">
@@ -74,15 +64,14 @@
                                 <li><a href="#" class="MenuBarItemSubmenu">Lan&ccedil;amento</a>
                                   <ul>
                                     <li><a href="../administrativo/Adm_Lanc01.php">Novo</a></li>
-                                    <li><a href="../administrativo/Adm_Lanc02.php">Consulta</a></li>
+                                    <li><a href="#" class="MenuBarItemSubmenu">Consulta</a>
+                                      <ul>
+                                        <li><a href="../administrativo/Adm_Lanc02.php">Geral</a></li>
+                                        <li><a href="../administrativo/Adm_Lanc02.php">Previsão</a></li>
+                                    </ul>
+                                    </li>
                                   </ul>
-                                </li>
-                                <li><a href="#" class="MenuBarItemSubmenu">Baixa</a>
-                                  <ul>
-                                    <li><a href="../administrativo/Adm_Baixa01.php">Nova</a></li>
-                                    <li><a href="../administrativo/Adm_Baixa02.php">Consulta</a></li>
-                                  </ul>
-                                </li>
+                                </li>                                
 							  </ul>
 						</div>
 						</div>
