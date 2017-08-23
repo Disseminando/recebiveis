@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_cs_clinica" value="name:id_clin;datatype:int,name:nome_clin;datatype:string" />
+	<infoitem key="UD_cs_situacao" value="name:id_situa;datatype:int,name:tipo_situa;datatype:string" />
+	<infoitem key="UD_cs_medicos" value="name:id_med;datatype:int,name:data_med;datatype:date,name:CRM;datatype:string,name:nome_med;datatype:string,name:fone_med;datatype:string,name:email_med;datatype:string,name:clin_id;datatype:int,name:situacao_id;datatype:int,name:cadastrador_med;datatype:string" />
+	<infoitem key="UD_cs_clinicas" value="name:id_clin;datatype:int,name:nome_clin;datatype:string" />
+</info>
